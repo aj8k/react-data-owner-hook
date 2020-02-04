@@ -1,8 +1,12 @@
 # ide
 /.vscode
+/node_modules
 
 # temporary
 /.rts2_cache_cjs
 
 # project files
 /src
+.gitignore
+.npmignore
+package-lock.json

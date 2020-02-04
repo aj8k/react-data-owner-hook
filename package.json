@@ -19,5 +19,6 @@
   "devDependencies": {
     "microbundle": "^0.12.0-next.8",
     "react": "^16.8.6"
-  }
+  },
+  "dependencies": {}
 }
