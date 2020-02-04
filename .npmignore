@@ -1,0 +1,8 @@
+# ide
+/.vscode
+
+# temporary
+/.rts2_cache_cjs
+
+# project files
+/src
