@@ -6,7 +6,7 @@ import {
   removeChangeListener,
 } from './Provider';
 
-function generateDataOwnerHook<T>(data: T) {
+export function generateDataOwnerHook<T>(data: T) {
   const provider = createDataProvider<T>(data);
 
   return <K extends keyof T>(
@@ -33,5 +33,3 @@ function generateDataOwnerHook<T>(data: T) {
     return [value, updateValue];
   };
 }
-
-export default generateDataOwnerHook;

@@ -1,3 +1,3 @@
-import { default as generateDataOwnerHook } from './generateDataOwnerHook';
+import { generateDataOwnerHook } from './generateDataOwnerHook';
 
 export { generateDataOwnerHook };
