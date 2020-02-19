@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Provider,
   createDataProvider,
@@ -11,12 +11,18 @@ export function generateDataOwnerHook<T>(data: T) {
 
   return <K extends keyof T>(
     property: K
-  ): [T[K], (val: Provider<T>[K]) => void] => {
+  ): [T[K], (val: Provider<T>[K] | ((x: Provider<T>[K]) => Provider<T>[K])) => void] => {
     const [value, setValue] = useState<T[K]>(provider[property]);
+    const valueRef = useRef(value);
+    valueRef.current = value;
 
     const updateValue = useCallback(
-      (val: Provider<T>[K]) => {
-        provider[property] = val;
+      (val: Provider<T>[K] | ((x: Provider<T>[K]) => Provider<T>[K])) => {
+        if (typeof val === 'function') {
+          provider[property] = (val as (x: Provider<T>[K]) => Provider<T>[K])(valueRef.current);
+        } else {
+          provider[property] = val;
+        }
       },
       [property]
     );
