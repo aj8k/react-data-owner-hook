@@ -2,7 +2,12 @@
   "name": "react-data-owner-hook",
   "version": "0.1.1",
   "description": "",
-  "keywords": ["state", "data owner", "hook", "react"],
+  "keywords": [
+    "state",
+    "data owner",
+    "hook",
+    "react"
+  ],
   "author": "Anton Joy <aj8k@protonmail.com>",
   "license": "MIT",
   "repository": {
