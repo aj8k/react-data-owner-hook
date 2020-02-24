@@ -1,6 +1,6 @@
-const addChangeListenerSymbol: unique symbol = Symbol('addChangeListener');
+const addChangeListenerSymbol: unique symbol = Symbol("addChangeListener");
 const removeChangeListenerSymbol: unique symbol = Symbol(
-  'removeChangeListener'
+  "removeChangeListener"
 );
 
 type ProviderListeners<T> = Partial<
@@ -30,7 +30,7 @@ export function createDataProvider<T extends ProviderData>(
   }
 
   function removeChangeListener(callback: (value: T[keyof T]) => void): void {
-    Object.keys(listeners).forEach((key) => {
+    Object.keys(listeners).forEach(key => {
       const index = listeners[key]?.indexOf(callback) ?? -1;
       if (index !== -1) {
         listeners[key]?.splice(index, 1);
@@ -39,25 +39,21 @@ export function createDataProvider<T extends ProviderData>(
   }
 
   function notify<K extends keyof T>(key: K, value: T[K]) {
-    listeners[key]?.forEach((callback) => callback(value));
+    listeners[key]?.forEach(callback => callback(value));
   }
 
-  return new Proxy(
-    {
-      ...data,
-      [addChangeListenerSymbol]: addChangeListener,
-      [removeChangeListenerSymbol]: removeChangeListener,
+  (data as Provider<T>)[addChangeListenerSymbol] = addChangeListener;
+  (data as Provider<T>)[removeChangeListenerSymbol] = removeChangeListener;
+
+  return new Proxy(data as Provider<T>, {
+    get(target, property) {
+      return Reflect.get(target, property);
     },
-    {
-      get(target, property) {
-        return Reflect.get(target, property);
-      },
-      set(target: T, property: keyof T, value) {
-        notify(property, value);
-        return Reflect.set(target, property, value);
-      },
+    set(target: T, property: keyof T, value) {
+      notify(property, value);
+      return Reflect.set(target, property, value);
     }
-  );
+  });
 }
 
 export function addChangeListener<T extends Provider<any>, K extends keyof T>(
